@@ -1,0 +1,12 @@
+{
+  "name": "pw-apitest-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "dmitry-boyko",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.2"
+  },
+  "scripts": {}
+}
