@@ -1,4 +1,4 @@
-Test Execution with CLI
+## Test Execution with CLI
 
 The project was created for an in-depth study of the Playwright framework for UI testing.
 
@@ -24,7 +24,7 @@ To run bulk tests with skip one: test.skip('test name') => similiar action from 
 
 To see report: yarn playwright show-report
 
-Debuging type:
+## Debuging type:
 
 Run test and trace it: yarn playwright test --project=chromium --trace on
 Debug mode: yarn playwright test --project=chromium --debug
@@ -40,28 +40,81 @@ yarn playwright install --with-deps
 
 To see current Playwright version: yarn playwright --version
 
---- Playwright vs Cypress exploretion ---
+# Playwright Locator Methods (page.getBy...)
 
-Playwright Locator Methods (page.getBy...) | Method | Description | | page.getByText(text) | Finds element by visible text | | page.getByRole(role) | Finds element by ARIA role (e.g., button, textbox) | | page.getByLabel(label) | Finds form control by associated label | | page.getByPlaceholder(text) | Finds input by placeholder text | | page.getByTitle(title) | Finds element by title attribute | | page.getByAltText(text) | Finds image by alt text | | page.getByTestId(id) | Finds element by 'data-testid' attribute |
+Ensure tables have proper alignment and spacing:
 
-// Example Usage await page.getByText('Submit').click(); await page.getByRole('button', { name: 'Save' }).click(); await page.getByLabel('Email').fill('user@example.com'); await page.getByTestId('login-button').click();
 
-// These methods are part of Playwright’s testing library-style selectors, // which make tests more readable and resilient.
+| Method                      | Description                                         |
+|----------------------------|-----------------------------------------------------|
+| page.getByText(text)       | Finds element by visible text                       |
+| page.getByRole(role)       | Finds element by ARIA role (e.g., button, textbox)  |
+| page.getByLabel(label)     | Finds form control by associated label              |
+| page.getByPlaceholder(text)| Finds input by placeholder text                     |
+| page.getByTitle(title)     | Finds element by title attribute                    |
+| page.getByAltText(text)    | Finds image by alt text                             |
+| page.getByTestId(id)       | Finds element by 'data-testid' attribute            |
 
-// cy // const getBydataTestId = (id: string) => cy.get([data-tested=${id}])
 
-// pw const getBydataTestId = (id: string, page: Page) => page.locator([data-tested="${id}"]) const clickByDataTestId = (id: string, page: Page) => getByDataTestId(id, page).click() const typeByDataTestID = async (id: string, page: Page, inputText: string) => { await getByDataTestId(id, page).type(inputText) }
+# Example Usage
 
---- action-helper.ts file --- import { Page } from '@playwright/test';
+await page.getByText('Submit').click();
 
-export const getByDataTestId = (id: string, page: Page) => page.locator([data-tested="${id}"]);
+await page.getByRole('button', { name: 'Save' }).click();
 
-export const clickByDataTestId = async (id: string, page: Page) => await getByDataTestId(id, page).click();
+await page.getByLabel('Email').fill('user@example.com');
 
-export const typeByDataTestId = async ( id: string, page: Page, inputText: string ) => { await getByDataTestId(id, page).type(inputText); }
+await page.getByTestId('login-button').click();
 
---- test.spec.ts file ---
+
+* These methods are part of Playwright’s testing library-style selectors, 
+* which make tests more readable and resilient.
+
+## cy
+
+const getBydataTestId = (id: string) => cy.get(`[data-tested=${id}]`)
+
+## pw
+
+const getBydataTestId = (id: string, page: Page) => page.locator(`[data-tested="${id}"]`)
+
+const clickByDataTestId = (id: string, page: Page) => getByDataTestId(id, page).click()
+
+const typeByDataTestID = async (id: string, page: Page, inputText: string) => {
+  await getByDataTestId(id, page).type(inputText)
+}
+
+
+
+## action-helper.ts file
+
+import { Page } from '@playwright/test';
+
+export const getByDataTestId = (id: string, page: Page) =>
+  page.locator(`[data-tested="${id}"]`);
+
+export const clickByDataTestId = async (id: string, page: Page) =>
+  await getByDataTestId(id, page).click();
+
+export const typeByDataTestId = async (
+  id: string,
+  page: Page,
+  inputText: string
+) => {
+  await getByDataTestId(id, page).type(inputText);
+}
+
+
+## test.spec.ts file
 
 import { getByDataTestId, clickByDataTestId, typeByDataTestId } from './qa-utils'
 
-test('login flow', async ({ page }) => { await typeByDataTestId('username', page, 'qa-develop') await typeByDataTestId('password', page, 'securePass123') await clickByDataTestId('submit-button', page) })
+test('login flow', async ({ page }) => {
+
+  await typeByDataTestId('username', page, 'qa-develop')
+  
+  await typeByDataTestId('password', page, 'securePass123')
+  
+  await clickByDataTestId('submit-button', page)
+  
+})
