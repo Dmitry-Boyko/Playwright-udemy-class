@@ -55,6 +55,7 @@
 
 
 # Example Usage
+```ts
 
 await page.getByText('Submit').click()
 
@@ -86,7 +87,7 @@ const typeByDataTestID = async (id: string, page: Page, inputText: string) => {
 
 ## action-helper.ts file
 
-import { Page } from '@playwright/test'
+import { Page } from '@playwright/test';
 
 export const getByDataTestId = (id: string, page: Page) =>
   page.locator(`[data-tested="${id}"]`)
